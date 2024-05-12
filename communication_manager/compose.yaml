@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:16.2
+    ports:
+      - 127.0.0.1:5432:5432
+    environment:
+      POSTGRES_DB: communication_manager
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+#    volumes:
+#      - pg-data:/var/lib/postgresql/data
+#
+#volumes:
+#  pg-data:
+

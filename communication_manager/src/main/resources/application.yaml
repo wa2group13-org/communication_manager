@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: communication_manager
+  config:
+    import:
+      - optional:secrets.yaml
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+camel:
+  component:
+    google-mail-stream:
+      application-name: ${gmail.application-name}
+      client-id: ${gmail.client-id}
+      client-secret: ${gmail.client-secret}
+      refresh-token: ${gmail.refresh-token}
+
+    google-mail:
+      application-name: ${gmail.application-name}
+      client-id: ${gmail.client-id}
+      client-secret: ${gmail.client-secret}
+      refresh-token: ${gmail.refresh-token}
