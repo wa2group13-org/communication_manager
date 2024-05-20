@@ -1,10 +1,25 @@
 services:
+  crm:
+    image: wa2group13/crm:0.0.2-SNAPSHOT
+    ports:
+      - 127.0.0.1:8081:8080
+    environment:
+      POSTGRES_URL: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: crm
+      POSTGRES_USERNAME: test
+      POSTGRES_PASSWORD: test
+      SPRING_PROFILES_ACTIVE: prod
+
+    depends_on:
+      - postgres
+
   postgres:
     image: postgres:16.2
     ports:
       - 127.0.0.1:5432:5432
     environment:
-      POSTGRES_DB: communication_manager
+      POSTGRES_DB: crm
       POSTGRES_USER: test
       POSTGRES_PASSWORD: test
 #    volumes:
