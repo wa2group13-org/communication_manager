@@ -21,3 +21,7 @@ camel:
       client-id: ${gmail.client-id}
       client-secret: ${gmail.client-secret}
       refresh-token: ${gmail.refresh-token}
+
+crm:
+  url: ${CRM_URL:-http://localhost}
+  port: ${CRM_PORT:-8081}

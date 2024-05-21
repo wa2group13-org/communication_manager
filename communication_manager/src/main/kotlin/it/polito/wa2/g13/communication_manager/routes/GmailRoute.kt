@@ -1,5 +1,6 @@
 package it.polito.wa2.g13.communication_manager.routes
 
+import it.polito.wa2.g13.communication_manager.configurations.CrmConfigProperties
 import it.polito.wa2.g13.communication_manager.dtos.CreateMessageDTO
 import it.polito.wa2.g13.communication_manager.dtos.Priority
 import org.apache.camel.EndpointInject
@@ -10,7 +11,9 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 
 @Component
-class GmailRoute : RouteBuilder() {
+class GmailRoute(
+    private val crmConfig: CrmConfigProperties
+) : RouteBuilder() {
     companion object {
         private val logger = LoggerFactory.getLogger(GmailRoute::class.java)
     }
@@ -68,7 +71,7 @@ class GmailRoute : RouteBuilder() {
             .marshal().json()
             .setHeader(Exchange.HTTP_METHOD, constant(org.apache.camel.component.http.HttpMethods.POST))
             .setHeader(Exchange.CONTENT_TYPE, constant("application/json"))
-            .to("http://localhost:8081/API/messages")
+            .to("${crmConfig.url}:${crmConfig.port}/API/messages")
 //            .to("bean:emailRepository?method=save")
     }
 }
