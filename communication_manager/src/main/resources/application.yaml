@@ -23,5 +23,5 @@ camel:
       refresh-token: ${gmail.refresh-token}
 
 crm:
-  url: ${CRM_URL:-http://localhost}
-  port: ${CRM_PORT:-8081}
+  url: ${CRM_URL:http://localhost}
+  port: ${CRM_PORT:8081}
