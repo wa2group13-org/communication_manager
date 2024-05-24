@@ -6,7 +6,6 @@ import it.polito.wa2.g13.communication_manager.dtos.Priority
 import org.apache.camel.EndpointInject
 import org.apache.camel.Exchange
 import org.apache.camel.LoggingLevel
-import org.apache.camel.RuntimeCamelException
 import org.apache.camel.builder.RouteBuilder
 import org.apache.camel.component.google.mail.GoogleMailEndpoint
 import org.apache.hc.client5.http.HttpHostConnectException
@@ -20,6 +19,12 @@ class GmailRoute(
     lateinit var ep: GoogleMailEndpoint
 
     override fun configure() {
+        onException(HttpHostConnectException::class.java)
+            .maximumRedeliveries(0)
+            .useOriginalMessage()
+            .log(LoggingLevel.ERROR, "Cannot send email from \${headers.CamelGoogleMailStreamFrom} to CRM service. Cause: \${exception.message}")
+            .markRollbackOnly()
+
         from("google-mail-stream:0?markAsRead=true&scopes=https://mail.google.com/")
             .process {
                 val id = it.getIn().getHeader("CamelGoogleMailId").toString()
