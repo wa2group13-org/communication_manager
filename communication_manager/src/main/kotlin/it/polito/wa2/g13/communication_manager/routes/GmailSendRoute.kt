@@ -32,7 +32,7 @@ class GmailSendRoute : RouteBuilder() {
             .doTry()
             .process {
                 val message = it.getIn().getBody(CreateEmailDTO::class.java)
-                val sender = "it.polito.wa2.g13@polito.it"
+                val sender = "it.polito.wa2.g13@gmail.com"
 
                 val mimeMessage = MimeMessage(Session.getDefaultInstance(Properties())).apply {
                     setFrom(InternetAddress(sender))
