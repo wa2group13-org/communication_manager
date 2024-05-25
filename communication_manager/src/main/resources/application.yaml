@@ -25,3 +25,7 @@ camel:
 crm:
   url: ${CRM_URL:http://localhost}
   port: ${CRM_PORT:8081}
+
+document-store:
+  url: ${DOCUMENT_STORE_URL:http://localhost}
+  port: ${DOCUMENT_STORE_URL:8082}
