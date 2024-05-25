@@ -1,6 +1,5 @@
 package it.polito.wa2.g13.communication_manager.routes
 
-import com.google.api.client.googleapis.json.GoogleJsonResponseException
 import com.google.api.services.gmail.model.Message
 import it.polito.wa2.g13.communication_manager.dtos.CreateEmailDTO
 import jakarta.mail.Session
@@ -8,7 +7,6 @@ import jakarta.mail.internet.InternetAddress
 import jakarta.mail.internet.MimeMessage
 import org.apache.camel.EndpointInject
 import org.apache.camel.LoggingLevel
-import org.apache.camel.RuntimeCamelException
 import org.apache.camel.builder.RouteBuilder
 import org.apache.camel.component.google.mail.GoogleMailEndpoint
 import org.springframework.stereotype.Component
@@ -24,12 +22,12 @@ class GmailSendRoute : RouteBuilder() {
 
     @OptIn(ExperimentalEncodingApi::class)
     override fun configure() {
-        onException(GoogleJsonResponseException::class.java)
-            .log(LoggingLevel.ERROR, "Failed to send message to \${body.recipient}")
-            .handled(false)
+        errorHandler(deadLetterChannel("log:dead?level=ERROR")
+            .maximumRedeliveries(3)
+            .redeliveryDelay(5000)
+            .onRedelivery { log.warn("Redelivering email to ${it.getIn().getBody(CreateEmailDTO::class.java).recipient}") })
 
         from("direct:sendMail")
-            .doTry()
             .process {
                 val message = it.getIn().getBody(CreateEmailDTO::class.java)
                 val sender = "it.polito.wa2.g13@gmail.com"
@@ -61,8 +59,5 @@ class GmailSendRoute : RouteBuilder() {
             }
             .log(LoggingLevel.INFO, "Sending email to \${body.recipient}")
             .to("google-mail:messages/send?scopes=https://mail.google.com/")
-            .doCatch(RuntimeCamelException::class.java)
-            .log(LoggingLevel.ERROR, "Cannot send email to \${body.recipient}")
-            .end()
     }
 }
