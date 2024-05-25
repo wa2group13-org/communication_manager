@@ -37,6 +37,7 @@ dependencies {
     implementation("org.apache.camel.springboot:camel-jackson-starter:4.5.0")
     implementation("org.apache.camel:camel-google-mail:4.5.0")
     implementation("org.apache.camel:camel-http:4.5.0")
+    implementation("org.apache.camel:camel-jms:4.5.0")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
 
     developmentOnly("org.springframework.boot:spring-boot-docker-compose")

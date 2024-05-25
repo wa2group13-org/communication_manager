@@ -7,10 +7,25 @@ services:
       POSTGRES_URL: postgres
       POSTGRES_PORT: 5432
       POSTGRES_DB: crm
-      POSTGRES_USERNAME: test
-      POSTGRES_PASSWORD: test
+      POSTGRES_USERNAME: crm
+      POSTGRES_PASSWORD: crm
       SPRING_PROFILES_ACTIVE: prod
+    depends_on:
+      - postgres
 
+  document-store:
+    image: wa2group13/document_store:0.0.2-SNAPSHOT
+    ports:
+      - 127.0.0.1:8082:8080
+    environment:
+      POSTGRES_URL: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: document_store
+      POSTGRES_USERNAME: document_store
+      POSTGRES_PASSWORD: document_store
+      SPRING_PROFILES_ACTIVE: prod
+      MULTIPART_MAX_FILE_SIZE: 10MB
+      MULTIPART_MAX_REQUEST_SIZE: 10MB
     depends_on:
       - postgres
 
@@ -20,9 +35,12 @@ services:
     ports:
       - 127.0.0.1:5432:5432
     environment:
-      POSTGRES_DB: crm
+      POSTGRES_MULTIPLE_DB: crm,document_store
+      POSTGRES_MULTIPLE_PASSWORD: crm,document_store
       POSTGRES_USER: test
       POSTGRES_PASSWORD: test
+    volumes:
+      - ./init_scripts/init_database.sh:/docker-entrypoint-initdb.d/init_database.sh
 #    volumes:
 #      - pg-data:/var/lib/postgresql/data
 #
