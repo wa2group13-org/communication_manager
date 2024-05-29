@@ -10,16 +10,9 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/API/emails")
 class EmailController(
-    val gmailConfigProperties: GmailConfigProperties,
     val camelContext: CamelContext,
     val producerTemplate: ProducerTemplate
 ) {
-
-    @GetMapping("")
-    fun getEmails(): Any {
-        return gmailConfigProperties
-    }
-
     @PostMapping("")
     fun sendEmail(@RequestBody message: CreateEmailDTO): Any {
         val exchange = ExchangeBuilder.anExchange(camelContext).withBody(message).build()

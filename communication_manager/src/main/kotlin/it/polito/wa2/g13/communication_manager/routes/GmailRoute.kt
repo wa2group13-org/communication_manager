@@ -39,7 +39,7 @@ class GmailRoute(
             .maximumRedeliveries(0)
             .log(
                 LoggingLevel.ERROR,
-                "Cannot send email from \${body.sender} to CRM service. Cause: \${exception.message}"
+                "Cannot send email from \${variables.sender} to CRM service. Cause: \${exception.message}"
             )
             .markRollbackOnly()
 
@@ -89,6 +89,7 @@ class GmailRoute(
 
                     }
 
+                it.setVariable("sender", from)
                 it.setVariable("attachments", attachments)
             }
             .log(LoggingLevel.INFO, "Sending email from \"\${body.sender}\" to CRM service.")
