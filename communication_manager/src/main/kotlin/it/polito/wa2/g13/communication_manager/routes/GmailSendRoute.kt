@@ -5,10 +5,8 @@ import it.polito.wa2.g13.communication_manager.dtos.CreateEmailDTO
 import jakarta.mail.Session
 import jakarta.mail.internet.InternetAddress
 import jakarta.mail.internet.MimeMessage
-import org.apache.camel.EndpointInject
 import org.apache.camel.LoggingLevel
 import org.apache.camel.builder.RouteBuilder
-import org.apache.camel.component.google.mail.GoogleMailEndpoint
 import org.springframework.stereotype.Component
 import java.io.ByteArrayOutputStream
 import java.util.*
@@ -17,8 +15,6 @@ import kotlin.io.encoding.ExperimentalEncodingApi
 
 @Component
 class GmailSendRoute : RouteBuilder() {
-    @EndpointInject("google-mail:messages/send")
-    lateinit var ep: GoogleMailEndpoint
 
     @OptIn(ExperimentalEncodingApi::class)
     override fun configure() {
