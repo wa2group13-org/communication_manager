@@ -46,6 +46,7 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:postgresql")
+    testImplementation("org.apache.camel:camel-test-spring-junit5:4.5.0")
 }
 
 tasks.withType<KotlinCompile> {

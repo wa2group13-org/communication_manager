@@ -16,6 +16,6 @@ class EmailController(
     fun sendEmail(@RequestBody message: CreateEmailDTO): Any {
         val exchange = ExchangeBuilder.anExchange(camelContext).withBody(message).build()
         producerTemplate.send("direct:sendMail", exchange)
-        return exchange.getIn().messageId
+        return exchange.getIn().body
     }
 }
