@@ -1,6 +1,5 @@
 package it.polito.wa2.g13.communication_manager.controllers
 
-import it.polito.wa2.g13.communication_manager.configurations.GmailConfigProperties
 import it.polito.wa2.g13.communication_manager.dtos.CreateEmailDTO
 import org.apache.camel.CamelContext
 import org.apache.camel.ProducerTemplate
