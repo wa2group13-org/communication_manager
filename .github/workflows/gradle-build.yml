@@ -36,7 +36,11 @@ jobs:
     - name: Build with Gradle Wrapper
       working-directory: ./communication_manager
       run: |
-        export SPRING_PROFILES_ACTIVE=dev
+        export SPRING_PROFILES_ACTIVE=prod
+        export APPLICATION_NAME=test
+        export CLIENT_ID=test
+        export CLIENT_SECRET=test
+        export REFRESH_TOKEN=test
         ./gradlew build --info
 
     # NOTE: The Gradle Wrapper is the default and recommended way to run Gradle (https://docs.gradle.org/current/userguide/gradle_wrapper.html).

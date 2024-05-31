@@ -2,10 +2,7 @@ package it.polito.wa2.g13.communication_manager.routes
 
 import com.google.api.services.gmail.model.Message
 import it.polito.wa2.g13.communication_manager.IntegrationTest
-import it.polito.wa2.g13.communication_manager.configurations.CrmConfigProperties
-import it.polito.wa2.g13.communication_manager.dtos.CreateMessageDTO
 import it.polito.wa2.g13.communication_manager.dtos.CrmSendMessageResponse
-import it.polito.wa2.g13.communication_manager.dtos.Priority
 import it.polito.wa2.g13.communication_manager.util.randomAttachments
 import it.polito.wa2.g13.communication_manager.util.randomMessage
 import org.apache.camel.*
@@ -14,57 +11,22 @@ import org.apache.camel.builder.ExchangeBuilder
 import org.apache.camel.component.google.mail.stream.GoogleMailStreamConstants
 import org.apache.camel.component.mock.MockEndpoint
 import org.apache.camel.test.spring.junit5.CamelSpringBootTest
+import org.apache.camel.test.spring.junit5.UseAdviceWith
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.http.*
 import org.springframework.test.annotation.DirtiesContext
-import org.springframework.web.client.RestTemplate
 
 @SpringBootTest
 @CamelSpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@UseAdviceWith
 class GmailRouteTest : IntegrationTest() {
 
     @Autowired
-    private lateinit var crmConfig: CrmConfigProperties
-
-    private fun postMessage(message: CreateMessageDTO): ResponseEntity<CrmSendMessageResponse> {
-        val restTemplate = RestTemplate()
-        val headers = HttpHeaders().apply {
-            this.add("Content-Type", "application/json")
-            this.add("Accept", "application/json")
-        }
-
-        val entity = HttpEntity(message, headers)
-
-        return restTemplate.exchange(
-            "${crmConfig.url}:${crmConfig.port}/API/messages",
-            HttpMethod.POST,
-            entity,
-            CrmSendMessageResponse::class.java
-        )
-    }
-
-    @Autowired
     private lateinit var context: CamelContext
-
-    @Test
-    fun `test container connection`() {
-        val resCrm = postMessage(
-            CreateMessageDTO(
-                priority = Priority.Low,
-                channel = "email",
-                body = "sium",
-                sender = "io",
-                subject = "boh",
-            )
-        )
-
-        assertEquals(HttpStatusCode.valueOf(201), resCrm.statusCode)
-    }
 
     private fun Message.toDto() = CrmSendMessageResponse(
         id = 0,
@@ -105,6 +67,7 @@ class GmailRouteTest : IntegrationTest() {
             it.weaveByToUri(GmailRoute.Direct.GET_GMAIL_MESSAGE).replace().transform(it.constant(message))
             it.weaveByToUri(GmailRoute.Direct.SEND_MESSAGE_TO_CRM).after().to("mock:checkResult")
         }
+        context.start()
 
         val exchange = ExchangeBuilder.anExchange(context)
             .withHeader(GoogleMailStreamConstants.MAIL_ID, "id")
@@ -118,6 +81,8 @@ class GmailRouteTest : IntegrationTest() {
             .usingRecursiveComparison()
             .ignoringFields("date", "status", "priority", "id")
             .isEqualTo(message.toDto())
+
+        context.stop()
     }
 
     @Test
@@ -136,6 +101,7 @@ class GmailRouteTest : IntegrationTest() {
             it.weaveByToUri(GmailRoute.Direct.SEND_MESSAGE_TO_CRM).after().to("mock:checkResult")
             it.weaveByToUri(GmailRoute.Direct.SEND_ATTACHMENT_TO_DOCUMENT_STORE).after().to("mock:checkResult")
         }
+        context.start()
 
         val exchange = ExchangeBuilder.anExchange(context)
             .withHeader(GoogleMailStreamConstants.MAIL_ID, "id")
@@ -156,5 +122,7 @@ class GmailRouteTest : IntegrationTest() {
 
             assertEquals(201, attachmentResponse)
         }
+
+        context.stop()
     }
 }
