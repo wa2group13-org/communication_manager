@@ -4,14 +4,17 @@
 
 # Environmental variables
 
-- `CRM_URL`: url of the [CRM Service][crm]
-- `CRM_PORT`: port of the [CRM Service][crm]
-- `DOCUMENT_STORE_URL`: url the of the [Document Store Service][ds]
-- `DOCUMENT_STORE_PORT`: port of the [Document Store Service][ds]
-- `APPLICATION_NAME`: name of the Google application to connect
-- `CLIENT_ID`: client id given by the [Google API for Gmail][gmail-api]
-- `CLIENT_SECRET`: client secret given by the [Google API for Gmail][gmail-api]
-- `REFRESH_TOKEN`: refresh token for the application
+- `CRM_URL`: Url of the [CRM Service][crm]
+- `CRM_PORT`: Port of the [CRM Service][crm]
+- `DOCUMENT_STORE_URL`: Url the of the [Document Store Service][ds]
+- `DOCUMENT_STORE_PORT`: Port of the [Document Store Service][ds]
+- `APPLICATION_NAME`: Name of the Google application to connect
+- `CLIENT_ID`: Client id given by the [Google API for Gmail][gmail-api]
+- `CLIENT_SECRET`: Client secret given by the [Google API for Gmail][gmail-api]
+- `REFRESH_TOKEN`: Refresh token for the application
+- `SPRING_PROFILES_ACTIVE`: Spring comma-separated profiles, the only two profiles available are `dev` and `prod`, by default none is selected
+
+
 
 
 [crm]: https://hub.docker.com/r/wa2group13/crm
