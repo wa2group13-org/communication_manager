@@ -12,7 +12,7 @@ plugins {
 }
 
 group = "it.polito.wa2.g13"
-version = "0.0.1-SNAPSHOT"
+version = "0.0.2-SNAPSHOT"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_21
@@ -73,3 +73,12 @@ tasks.named<BootBuildImage>("bootBuildImage") {
         }
     }
 }
+
+abstract class ProjectVersion : DefaultTask() {
+    @TaskAction
+    fun action() {
+        println(project.version)
+    }
+}
+
+tasks.register<ProjectVersion>("projectVersion")

@@ -40,3 +40,4 @@ out/
 .kotlin
 
 secrets.yaml
+publish.sh

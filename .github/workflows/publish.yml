@@ -15,6 +15,9 @@ jobs:
         uses: actions/checkout@v3
       - name: Releasing
         uses: ncipollo/release-action@v1
+        # Documentation can be found at https://github.com/ncipollo/release-action
+        working-directory: ./communication_manager
         with:
           generateReleaseNotes: true
+          bodyFile: "DOCKER.md"
 

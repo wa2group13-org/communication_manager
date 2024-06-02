@@ -28,4 +28,4 @@ crm:
 
 document-store:
   url: ${DOCUMENT_STORE_URL:http://localhost}
-  port: ${DOCUMENT_STORE_URL:8082}
+  port: ${DOCUMENT_STORE_PORT:8082}
