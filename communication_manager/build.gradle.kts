@@ -12,7 +12,7 @@ plugins {
 }
 
 group = "it.polito.wa2.g13"
-version = "0.0.2-SNAPSHOT"
+version = "1.0.0"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_21
@@ -35,6 +35,8 @@ dependencies {
     implementation("org.apache.camel.springboot:camel-spring-boot-starter:4.5.0")
     implementation("org.apache.camel.springboot:camel-google-mail-starter:4.5.0")
     implementation("org.apache.camel.springboot:camel-jackson-starter:4.5.0")
+    implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
     implementation("org.apache.camel:camel-google-mail:4.5.0")
     implementation("org.apache.camel:camel-http:4.5.0")
     implementation("org.apache.camel:camel-jms:4.5.0")
@@ -77,7 +79,7 @@ tasks.named<BootBuildImage>("bootBuildImage") {
 abstract class ProjectVersion : DefaultTask() {
     @TaskAction
     fun action() {
-        println(project.version)
+        print(project.version)
     }
 }
 

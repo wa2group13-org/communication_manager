@@ -14,7 +14,6 @@ import org.apache.camel.LoggingLevel
 import org.apache.camel.builder.RouteBuilder
 import org.apache.camel.component.google.mail.GoogleMailEndpoint
 import org.apache.camel.component.google.mail.stream.GoogleMailStreamConstants
-import org.apache.hc.client5.http.HttpHostConnectException
 import org.apache.hc.client5.http.entity.mime.MultipartEntityBuilder
 import org.apache.hc.client5.http.entity.mime.StringBody
 import org.apache.hc.core5.http.ContentType
@@ -137,7 +136,7 @@ class GmailRoute(
             .marshal().json()
             .setHeader(Exchange.HTTP_METHOD, constant(org.apache.camel.component.http.HttpMethods.POST))
             .setHeader(Exchange.CONTENT_TYPE, constant("application/json"))
-            .to("${crmConfig.url}:${crmConfig.port}/API/messages?throwExceptionOnFailure=false")
+            .to("${crmConfig.url}:${crmConfig.port}${crmConfig.path}?throwExceptionOnFailure=false")
             .unmarshal().json(CrmSendMessageResponse::class.java)
             // Save the `id` of the last created message into the variables
             .process { it.setVariable("messageId", it.getIn().getBody(CrmSendMessageResponse::class.java).id) }
@@ -173,7 +172,7 @@ class GmailRoute(
                 it.getIn().setHeader(Exchange.CONTENT_TYPE, multipart.contentType)
                 it.getIn().body = multipart
             }
-            .to("${documentStoreConfig.url}:${documentStoreConfig.port}/API/documents?throwExceptionOnFailure=false")
+            .to("${documentStoreConfig.url}:${documentStoreConfig.port}${documentStoreConfig.path}?throwExceptionOnFailure=false")
             .choice()
             .`when`(simple("\${headers.${Exchange.HTTP_RESPONSE_CODE}} >= 400 && \${headers.${Exchange.HTTP_RESPONSE_CODE}} < 500"))
             .log(
