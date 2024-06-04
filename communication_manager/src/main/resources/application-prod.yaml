@@ -3,3 +3,13 @@ gmail:
   client-id: ${CLIENT_ID}
   client-secret: ${CLIENT_SECRET}
   refresh-token: ${REFRESH_TOKEN}
+
+crm:
+  url: ${CRM_URL}
+  port: ${CRM_PORT}
+  path: ${CRM_PATH}
+
+document-store:
+  url: ${DOCUMENT_STORE_URL}
+  port: ${DOCUMENT_STORE_PORT}
+  path: ${DOCUMENT_STORE_PATH}

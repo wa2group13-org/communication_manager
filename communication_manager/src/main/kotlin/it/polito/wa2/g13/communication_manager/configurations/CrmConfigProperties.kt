@@ -6,4 +6,5 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 data class CrmConfigProperties(
     val url: String,
     val port: String,
+    val path: String,
 )

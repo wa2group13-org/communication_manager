@@ -4,6 +4,7 @@ import org.junit.jupiter.api.AfterEach
 import org.slf4j.LoggerFactory
 import org.springframework.core.io.ClassPathResource
 import org.springframework.test.annotation.DirtiesContext
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.springframework.util.StreamUtils
@@ -19,18 +20,19 @@ import java.nio.charset.Charset
 
 @Testcontainers
 @DirtiesContext
+@ActiveProfiles("dev", "no-security")
 abstract class IntegrationTest {
     companion object {
-        const val POSTGRES_PORT = 5432
-        val CRM_IMAGE = DockerImageName.parse("wa2group13/crm:0.0.2-SNAPSHOT")
-        const val CRM_PORT = 8080
-        val DOCUMENT_STORE_IMAGE = DockerImageName.parse("wa2group13/document_store:0.0.2-SNAPSHOT")
-        const val DOCUMENT_STORE_PORT = 8080
-        val dbs = listOf("crm", "document_store")
-        val passwords = listOf("crm", "document_store")
+        private const val POSTGRES_PORT = 5432
+        private val CRM_IMAGE = DockerImageName.parse("wa2group13/crm:0.0.2-SNAPSHOT")
+        private const val CRM_PORT = 8080
+        private val DOCUMENT_STORE_IMAGE = DockerImageName.parse("wa2group13/document_store:0.0.2-SNAPSHOT")
+        private const val DOCUMENT_STORE_PORT = 8080
+        private val dbs = listOf("crm", "document_store")
+        private val passwords = listOf("crm", "document_store")
 
         @JvmStatic
-        val network = Network.newNetwork()!!
+         val network = Network.newNetwork()!!
 
         @JvmStatic
         @Container
