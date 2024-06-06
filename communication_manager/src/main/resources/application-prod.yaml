@@ -3,3 +3,14 @@ gmail:
   client-id: ${CLIENT_ID}
   client-secret: ${CLIENT_SECRET}
   refresh-token: ${REFRESH_TOKEN}
+
+spring:
+  kafka:
+    producer:
+      bootstrap-servers: ${KAFKA_PRODUCER_BOOTSTRAP_SERVERS}
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${JWT_ISSUER_URI}

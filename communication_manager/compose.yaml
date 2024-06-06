@@ -1,6 +1,6 @@
 services:
   crm:
-    image: wa2group13/crm:0.0.2-SNAPSHOT
+    image: wa2group13/crm:1.0.1
     ports:
       - 127.0.0.1:8081:8080
     environment:
@@ -9,12 +9,18 @@ services:
       POSTGRES_DB: crm
       POSTGRES_USERNAME: crm
       POSTGRES_PASSWORD: crm
-      SPRING_PROFILES_ACTIVE: prod
+      SPRING_PROFILES_ACTIVE: prod,no-security
+      KAFKA_CONSUMER_BOOTSTRAP_SERVERS: kafka:29092
+      JWT_ISSUER_URI: placeholder
+    networks:
+      - kfk-net
+      - psql-net
     depends_on:
       - postgres
+      - kafka
 
   document-store:
-    image: wa2group13/document_store:0.0.2-SNAPSHOT
+    image: wa2group13/document_store:1.0.1
     ports:
       - 127.0.0.1:8082:8080
     environment:
@@ -23,11 +29,17 @@ services:
       POSTGRES_DB: document_store
       POSTGRES_USERNAME: document_store
       POSTGRES_PASSWORD: document_store
-      SPRING_PROFILES_ACTIVE: prod
+      SPRING_PROFILES_ACTIVE: prod,no-security
+      KAFKA_CONSUMER_BOOTSTRAP_SERVERS: kafka:29092
+      JWT_ISSUER_URI: placeholder
       MULTIPART_MAX_FILE_SIZE: 10MB
       MULTIPART_MAX_REQUEST_SIZE: 10MB
+    networks:
+      - kfk-net
+      - psql-net
     depends_on:
       - postgres
+      - kafka
 
   postgres:
     image: postgres:16.2
@@ -42,7 +54,46 @@ services:
     volumes:
       - ./init_scripts/init_database.sh:/docker-entrypoint-initdb.d/init_database.sh
       - pg-data:/var/lib/postgresql/data
+    networks:
+      - psql-net
+
+  kafka:
+    image: bitnami/kafka:3.7
+    hostname: kafka
+    ports:
+      - 9092:9092
+    volumes:
+      - kafka_data:/bitnami
+    environment:
+      KAFKA_CFG_NODE_ID: 0
+      KAFKA_CFG_PROCESS_ROLES: controller,broker
+      KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: 0@kafka:9093
+      KAFKA_CFG_LISTENERS: PLAINTEXT://:29092,CONTROLLER://:9093,PLAINTEXT_HOST://:9092
+      KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_CFG_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_CFG_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_CFG_MESSAGE_MAX_BYTES: 10485760
+    networks:
+      - kfk-net
+
+  kafka-ui:
+    container_name: kafka-ui
+    image: provectuslabs/kafka-ui:latest
+    ports:
+      - 9090:8080
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
+      DYNAMIC_CONFIG_ENABLED: 'true'
+    networks:
+      - kfk-net
 
 volumes:
   pg-data:
+  kafka_data:
 
+networks:
+  psql-net:
+  kfk-net:
+    driver: bridge
