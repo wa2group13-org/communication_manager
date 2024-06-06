@@ -37,6 +37,7 @@ dependencies {
     implementation("org.apache.camel.springboot:camel-jackson-starter:4.5.0")
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
+    implementation("org.springframework.kafka:spring-kafka")
     implementation("org.apache.camel:camel-google-mail:4.5.0")
     implementation("org.apache.camel:camel-http:4.5.0")
     implementation("org.apache.camel:camel-jms:4.5.0")

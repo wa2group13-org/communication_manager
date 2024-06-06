@@ -3,6 +3,7 @@ spring:
     name: communication_manager
   profiles:
     active:
+      - dev
       - no-security
   config:
     import:
@@ -10,6 +11,15 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+
+  kafka:
+    producer:
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      key-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      client-id: producer
+      properties:
+        max.request.size: ${KAFKA_PRODUCER_MAX_REQUEST_SIZE:10485760}
+        message.max.bytes: ${KAFKA_PRODUCER_MESSAGE_MAX_BYTES:10485760}
 
 camel:
   component:
@@ -24,3 +34,7 @@ camel:
       client-id: ${gmail.client-id}
       client-secret: ${gmail.client-secret}
       refresh-token: ${gmail.refresh-token}
+
+kafka-config:
+  attachment-topic: ${ATTACHMENT_TOPIC:attachment.json}
+  mail-topic: ${MAIL_TOPIC:mail.json}

@@ -1,9 +1,4 @@
-crm:
-  url: http://localhost
-  port: 8081
-  path: /API/messages
-
-document-store:
-  url: http://localhost
-  port: 8082
-  path: /API/documents
+spring:
+  kafka:
+    producer:
+      bootstrap-servers: 127.0.0.1:9092
