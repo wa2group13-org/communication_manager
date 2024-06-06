@@ -1,8 +1,7 @@
 package it.polito.wa2.g13.communication_manager
 
-import it.polito.wa2.g13.communication_manager.configurations.CrmConfigProperties
-import it.polito.wa2.g13.communication_manager.configurations.DocumentStoreConfigProperties
 import it.polito.wa2.g13.communication_manager.configurations.GmailConfigProperties
+import it.polito.wa2.g13.communication_manager.configurations.KafkaConfigProperties
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.runApplication
@@ -10,8 +9,7 @@ import org.springframework.boot.runApplication
 @SpringBootApplication
 @EnableConfigurationProperties(
     GmailConfigProperties::class,
-    CrmConfigProperties::class,
-    DocumentStoreConfigProperties::class
+    KafkaConfigProperties::class,
 )
 class CommunicationManagerApplication
 

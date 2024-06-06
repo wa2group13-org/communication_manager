@@ -12,4 +12,5 @@ data class CreateMessageDTO(
     val priority: Priority,
     val subject: String?,
     val body: String?,
+    val mailId: String?,
 )

@@ -4,12 +4,13 @@ gmail:
   client-secret: ${CLIENT_SECRET}
   refresh-token: ${REFRESH_TOKEN}
 
-crm:
-  url: ${CRM_URL}
-  port: ${CRM_PORT}
-  path: ${CRM_PATH}
+spring:
+  kafka:
+    producer:
+      bootstrap-servers: ${KAFKA_PRODUCER_BOOTSTRAP_SERVERS}
 
-document-store:
-  url: ${DOCUMENT_STORE_URL}
-  port: ${DOCUMENT_STORE_PORT}
-  path: ${DOCUMENT_STORE_PATH}
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${JWT_ISSUER_URI}
