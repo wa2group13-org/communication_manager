@@ -14,6 +14,9 @@
   connections to the Kafka cluster.
 - `KAFKA_PRODUCER_MAX_REQUEST_SIZE`: How big the request can be to Kafka. Default: `10485760`
 - `KAFKA_PRODUCER_MESSAGE_MAX_BYTES`: How big a single message can be sent to Kafka. Default: `10485760`
+- `OPENAPI_BASE_URL`: base url of this service that will appear in the OpenAPI documentation.
+  Default `http://localhost:${PORT}`
+- `PORT`: server port. Default: `8080`
 
 [crm]: https://hub.docker.com/r/wa2group13/crm
 

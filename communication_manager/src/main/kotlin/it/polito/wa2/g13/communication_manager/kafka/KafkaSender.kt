@@ -1,6 +1,6 @@
 package it.polito.wa2.g13.communication_manager.kafka
 
-import it.polito.wa2.g13.communication_manager.configurations.KafkaConfigProperties
+import it.polito.wa2.g13.communication_manager.properties.KafkaConfigProperties
 import it.polito.wa2.g13.communication_manager.dtos.CreateAttachmentDTO
 import it.polito.wa2.g13.communication_manager.dtos.CreateMessageDTO
 import org.apache.camel.Body
