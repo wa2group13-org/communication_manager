@@ -5,6 +5,7 @@ spring:
     active:
       - dev
       - no-security
+      - api-docs
   config:
     import:
       - optional:secrets.yaml
@@ -38,3 +39,22 @@ camel:
 kafka-config:
   attachment-topic: ${ATTACHMENT_TOPIC:attachment.json}
   mail-topic: ${MAIL_TOPIC:mail.json}
+
+server:
+  port: ${PORT:8080}
+
+openapi:
+  base-url: ${OPENAPI_BASE_URL:http://localhost:${server.port}}
+
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
+  instance:
+    preferIpAddress: true
