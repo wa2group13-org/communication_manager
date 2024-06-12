@@ -7,6 +7,7 @@ import jakarta.mail.internet.InternetAddress
 import jakarta.mail.internet.MimeMessage
 import org.apache.camel.LoggingLevel
 import org.apache.camel.builder.RouteBuilder
+import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Component
 import java.io.ByteArrayOutputStream
 import java.util.*
@@ -14,6 +15,7 @@ import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 
 @Component
+@Profile("!no-gmail")
 class GmailSendRoute : RouteBuilder() {
 
     @OptIn(ExperimentalEncodingApi::class)
