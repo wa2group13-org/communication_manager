@@ -45,3 +45,9 @@ server:
 
 openapi:
   base-url: ${OPENAPI_BASE_URL:http://localhost:${server.port}}
+
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
