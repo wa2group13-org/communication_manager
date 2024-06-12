@@ -12,6 +12,7 @@ import org.apache.camel.LoggingLevel
 import org.apache.camel.builder.RouteBuilder
 import org.apache.camel.component.google.mail.GoogleMailEndpoint
 import org.apache.camel.component.google.mail.stream.GoogleMailStreamConstants
+import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Component
 
 data class Attachment(
@@ -20,6 +21,7 @@ data class Attachment(
 )
 
 @Component
+@Profile("!no-gmail")
 class GmailRoute(
     private val kafkaSender: KafkaSender,
 ) : RouteBuilder() {

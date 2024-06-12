@@ -1,4 +1,4 @@
-package it.polito.wa2.g13.communication_manager.configurations
+package it.polito.wa2.g13.communication_manager.properties
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 
