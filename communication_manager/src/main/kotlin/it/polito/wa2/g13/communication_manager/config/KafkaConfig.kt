@@ -1,6 +1,6 @@
 package it.polito.wa2.g13.communication_manager.config
 
-import it.polito.wa2.g13.communication_manager.configurations.KafkaConfigProperties
+import it.polito.wa2.g13.communication_manager.properties.KafkaConfigProperties
 import org.apache.kafka.clients.admin.NewTopic
 import org.apache.kafka.common.config.TopicConfig
 import org.springframework.context.annotation.Bean
