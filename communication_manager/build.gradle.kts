@@ -10,6 +10,7 @@ plugins {
     kotlin("plugin.spring") version "1.9.23"
     kotlin("plugin.jpa") version "1.9.23"
 }
+val springCloudVersion by extra("2023.0.2")
 
 group = "it.polito.wa2.g13"
 version = "1.0.0"
@@ -42,6 +43,8 @@ dependencies {
     implementation("org.apache.camel:camel-http:4.5.0")
     implementation("org.apache.camel:camel-jms:4.5.0")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
+
 
     developmentOnly("org.springframework.boot:spring-boot-docker-compose")
 
@@ -74,6 +77,11 @@ tasks.named<BootBuildImage>("bootBuildImage") {
             username = System.getenv("DOCKER_USERNAME")
             password = System.getenv("DOCKER_PASSWORD")
         }
+    }
+}
+dependencyManagement {
+    imports {
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion")
     }
 }
 
