@@ -5,9 +5,12 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
 import org.springframework.core.env.Environment
 import org.springframework.core.env.Profiles
+import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
+import org.springframework.security.core.authority.SimpleGrantedAuthority
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter
 import org.springframework.security.web.SecurityFilterChain
 
 @Configuration
@@ -45,10 +48,28 @@ class SecurityNoFilterConfig {
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         return http
             .authorizeHttpRequests {
-                it.anyRequest().permitAll()
+
+                it.requestMatchers(HttpMethod.GET).hasRole("OPERATOR")
+                it.requestMatchers(HttpMethod.POST).hasRole("OPERATOR")
+                it.requestMatchers(HttpMethod.PUT).hasRole("OPERATOR")
+                it.requestMatchers(HttpMethod.DELETE).hasRole("ADMIN")
             }
             .csrf { it.disable() }
             .cors { it.disable() }
             .build()
     }
+
+    /**
+     * Get roles from the jwt
+     */
+    @Bean
+    fun jwtAuthenticationConverterForKeycloak(): JwtAuthenticationConverter =
+        JwtAuthenticationConverter().apply {
+            this.setJwtGrantedAuthoritiesConverter { jwt ->
+                val realmAccess = jwt.getClaim<Map<String, Collection<String>>>("realm_access")
+
+
+                realmAccess["roles"]?.map { SimpleGrantedAuthority("ROLE_$it") }
+            }
+        }
 }
