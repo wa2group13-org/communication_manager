@@ -81,7 +81,11 @@ tasks.withType<BootJar> {
 }
 
 tasks.named<BootBuildImage>("bootBuildImage") {
-    imageName = "${System.getenv("DOCKER_USERNAME")}/${project.name}:${project.version}"
+    val tagName = { tag: String -> "${System.getenv("DOCKER_USERNAME")}/${project.name}:${tag}" }
+
+    imageName = tagName("${project.version}")
+    tags = listOf(tagName("${project.version}"), tagName("latest"))
+
     docker {
         publishRegistry {
             username = System.getenv("DOCKER_USERNAME")
